@@ -2,6 +2,15 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
 
+## Run it
+
+Run `ng run build:element`. This will export the application into a single js file that you can include on any html website *after* `<annotation-viewer></annotation-viewer>` on the page.
+
+```
+<annotation-viewer></annotation-viewer>
+<script src="dist/elements/annotation-viewer.js"></script>
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
