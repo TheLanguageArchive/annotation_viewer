@@ -1,0 +1,5 @@
+<div *ngIf="this.hasMessages()">
+  <h2>Messages</h2>
+  <button class="clear" (click)="this.clearMessages()">clear</button>
+  <div *ngFor="let message of this.getMessages()">{{ message }}</div>
+</div>

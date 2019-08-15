@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+.table-viewer {
+    width: 780px;
+    display: grid;
+    grid-template-columns: 0.3fr 2fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: ". . . . ." ". . . . .";
+
+    &.annotation {
+        cursor: pointer;
+    }
+
+    &.active {
+        background-color: red;
+        color: white;
+    }
+}

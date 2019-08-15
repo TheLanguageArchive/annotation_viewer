@@ -1,0 +1,34 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./src/",
+    "downlevelIteration": true,
+    "incremental": true,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+        "@fav/*": ["./*"],
+        "@fav-components/*": ["app/components/*"],
+        "@fav-models/*": ["app/models/*"],
+        "@fav-services/*": ["app/services/*"],
+        "@fav-stores/*": ["app/stores/*"],
+        "@fav-specs/*": ["app/specs/*"],
+        "@fav-styles/*": ["app/styles/*"],
+        "@fav-views/*": ["app/views/*"],
+    },
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  }
+}
