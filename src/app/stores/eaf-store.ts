@@ -1,14 +1,17 @@
 import { Injectable } from "@angular/core";
-import { Store } from './store';
-import { EafState } from './states/eaf-state';
+import { Store } from '@fav-stores/store';
+import { EafState } from '@fav-stores/states/eaf-state';
 import { EafService } from '@fav-services/eaf.service';
-import { EafTier } from '../models/eaf/tier';
 
 @Injectable()
 export class EafStore extends Store<EafState> {
 
     constructor(private eafService: EafService) {
         super(new EafState());
+    }
+
+    buildInitialState() {
+
         this.eafService
         .fetch()
         .subscribe(eaf => {
@@ -28,6 +31,7 @@ export class EafStore extends Store<EafState> {
     }
 
     setTier(tierId: string): void {
+
         this.setState({
             ...this.state,
             tier: this.state.eaf.tiers.get(tierId)

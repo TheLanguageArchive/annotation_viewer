@@ -13,6 +13,7 @@ import { TimeSubdivisionComponent } from '@fav-components/table-viewer/time-subd
 import { SymbolicAssociationComponent } from '@fav-components/table-viewer/symbolic-association.component';
 import { IncludedInComponent } from '@fav-components/table-viewer/included-in.component';
 import { EafStore } from '@fav-stores/eaf-store';
+import { IdStore } from '@fav-stores/id-store';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { EafStore } from '@fav-stores/eaf-store';
     HttpClientModule
   ],
   entryComponents: [AnnotationViewerComponent],
-  providers: [EafStore],
+  providers: [EafStore, IdStore],
 })
 export class AppModule {
 

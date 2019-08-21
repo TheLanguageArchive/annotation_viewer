@@ -18,6 +18,6 @@ const concat = require('concat');
         // './dist/annotation-viewer/main-es5.js'
     ];
 
-    await fs.ensureDir('dist/elements/annotation-viewer');
+    await fs.ensureDir('dist/elements');
     await concat(files, 'dist/elements/annotation-viewer.js');
 })();
