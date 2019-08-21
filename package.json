@@ -1,6 +1,7 @@
 {
-  "name": "annotation-viewer",
-  "version": "0.0.0",
+  "name": "@tla/annotation-viewer",
+  "version": "1.0.0",
+  "repository": "git://github.com/thelanguagearchive/annotation_viewer.git",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,7 +12,6 @@
     "serve": "ng serve --open --proxy-config proxy.conf.json",
     "build:element": "ng build --prod --output-hashing none && node package-element.js"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.0-next.2",
     "@angular/common": "~9.0.0-next.2",
