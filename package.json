@@ -10,8 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve": "ng serve --open --proxy-config proxy.conf.json",
-    "build:element": "ng build --prod --output-hashing none && node package-element.js",
-    "postinstall": "npm run build:element"
+    "build:element": "ng build --prod --output-hashing none && node package-element.js"
   },
   "dependencies": {
     "@angular/animations": "~9.0.0-next.2",
