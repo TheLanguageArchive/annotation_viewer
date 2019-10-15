@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IdStore } from '@fav-stores/id-store';
+import { ApiUrlStore } from '@fav-stores/api-url-store';
 import { EafStore } from '@fav-stores/eaf-store';
 
 @Component({
@@ -10,13 +10,13 @@ import { EafStore } from '@fav-stores/eaf-store';
 export class AnnotationViewerComponent implements OnInit {
 
   title = 'Annotation Viewer';
-  @Input('id') id: string;
+  @Input('url') url: string;
 
-  constructor(private idStore: IdStore, private eafStore: EafStore) {}
+  constructor(private apiUrlStore: ApiUrlStore, private eafStore: EafStore) {}
 
   ngOnInit() {
 
-    this.idStore.setId(this.id);
+    this.apiUrlStore.setUrl(this.url);
     this.eafStore.buildInitialState();
   }
 }
