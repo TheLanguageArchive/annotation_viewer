@@ -1,7 +1,7 @@
 {
     "/flat": {
         "target": {
-            "host": "localhost",
+            "host": "local.mpi.nl",
             "protocol": "http",
             "port": 80
         },
