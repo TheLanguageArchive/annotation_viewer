@@ -1,5 +1,7 @@
 <div *ngIf="(eafStore.state$ | async).tier">
-    <app-video #videoPlayer url="{{ (eafStore.state$ | async).eaf.header.media[0].url }}" mimetype="{{ (eafStore.state$ | async).eaf.header.media[0].mimetype }}" (progress)="progressTracker($event)"></app-video>
+    <ng-template *ngIf="(eafStore.state$ | async).eaf.header.video">
+        <app-video #videoPlayer url="{{ (eafStore.state$ | async).eaf.header.video.url }}" mimetype="{{ (eafStore.state$ | async).eaf.header.video.mimetype }}" (progress)="progressTracker($event)"></app-video>
+    </ng-template>
     <div>
         <select class="tier-names" (change)="changeTier($event)">
             <option *ngFor="let iter of ((eafStore.state$ | async).eaf.tiers) | keyvalue: tierOrder" [value]="iter.value.value.id">{{ iter.value.value.id }}</option>

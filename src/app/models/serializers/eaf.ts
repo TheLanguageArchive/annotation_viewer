@@ -22,7 +22,7 @@ export function SerializeEaf(eaf: Eaf) {
     }
 
     let metadata  = new EafMetadata(eaf.metadata.author, eaf.metadata.date, eaf.metadata.format, eaf.metadata.version);
-    let header    = new EafHeader(eaf.header.mediafile, eaf.header.timeunits, media, properties);
+    let header    = new EafHeader(eaf.header.mediafile, eaf.header.timeunits, media, eaf.header.video, eaf.header.audio, properties);
 
     let timeslots = new OrderedMap<string, EafTimeslot>();
     for (let id in eaf.timeslots) {

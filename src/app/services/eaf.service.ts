@@ -16,7 +16,6 @@ export class EafService {
 
   fetch(): Observable<Eaf> {
 
-    console.log(this.apiUrlStore.state.url);
     return this.http
       .get(this.apiUrlStore.state.url)
       .pipe(

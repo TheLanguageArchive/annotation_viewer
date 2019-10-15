@@ -22,8 +22,7 @@ export class TableViewerComponent implements OnInit {
   /**
    * NG On Init
    */
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Video Component sends this method the current time
@@ -142,5 +141,9 @@ export class TableViewerComponent implements OnInit {
 
   annotationOrder(a: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>, b: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>): number {
     return b.value.rank > a.value.rank ? -1 : (a.value.rank > b.value.rank ? 1 : 0);
+  }
+
+  dump(data) {
+    console.log(data);
   }
 }
