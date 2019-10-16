@@ -1,5 +1,5 @@
 <div *ngIf="(eafStore.state$ | async).tier">
-    <ng-template *ngIf="(eafStore.state$ | async).eaf.header.video">
+    <ng-template [ngIf]="(eafStore.state$ | async).eaf.header.video">
         <app-video #videoPlayer url="{{ (eafStore.state$ | async).eaf.header.video.url }}" mimetype="{{ (eafStore.state$ | async).eaf.header.video.mimetype }}" (progress)="progressTracker($event)"></app-video>
     </ng-template>
     <div>
