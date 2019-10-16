@@ -8,11 +8,11 @@
         </select>
     </div>
     <div class="table-viewer">
-        <div>Nr</div>
-        <div>Annotation</div>
-        <div>Begin Time</div>
-        <div>End Time</div>
-        <div>Duration</div>
+        <div class="th">Nr</div>
+        <div class="th">Annotation</div>
+        <div class="th">Begin Time</div>
+        <div class="th">End Time</div>
+        <div class="th">Duration</div>
     </div>
     <div *ngFor="let iter of ((eafStore.state$ | async).tier.annotations) | keyvalue: annotationOrder; let i = index" (click)="activateAnnotation(iter.value.value.id)">
         <ng-template [ngIf]="(eafStore.state$ | async).tier.linguistic_type === 'toplevel'">

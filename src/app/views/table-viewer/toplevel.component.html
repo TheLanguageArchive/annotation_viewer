@@ -1,16 +1,16 @@
 <div class="table-viewer annotation" [ngClass]="{'active': (eafStore.state$ | async).activeIds.indexOf(id) > -1 }">
   <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).type === 'ref' && (eafStore.state$ | async).tier.annotations.get(id).ref !== null">
-    <div>{{ row }}</div>
-    <div>{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
-    <div><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).custom_start">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start.time) }}</span></div>
-    <div><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).custom_end">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_end.time) }}</span></div>
-    <div><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).custom_start && (eafStore.state$ | async).tier.annotations.get(id).custom_end">{{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start, (eafStore.state$ | async).tier.annotations.get(id).custom_end)) }}</span></div>
+    <div class="table-viewer-tr">{{ row }}</div>
+    <div class="table-viewer-tr">{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
+    <div class="table-viewer-tr"><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).custom_start">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start.time) }}</span></div>
+    <div class="table-viewer-tr"><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).custom_end">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_end.time) }}</span></div>
+    <div class="table-viewer-tr"><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).custom_start && (eafStore.state$ | async).tier.annotations.get(id).custom_end">{{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start, (eafStore.state$ | async).tier.annotations.get(id).custom_end)) }}</span></div>
   </ng-template>
   <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).type === 'alignable'">
-    <div>{{ row }}</div>
-    <div>{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
-    <div><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).start">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).start.time) }}</span></div>
-    <div><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).end">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).end.time) }}</span></div>
-    <div><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).start && (eafStore.state$ | async).tier.annotations.get(id).end">{{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).start, (eafStore.state$ | async).tier.annotations.get(id).end)) }}</span></div>
+    <div class="table-viewer-tr">{{ row }}</div>
+    <div class="table-viewer-tr">{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
+    <div class="table-viewer-tr"><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).start">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).start.time) }}</span></div>
+    <div class="table-viewer-tr"><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).end">{{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).end.time) }}</span></div>
+    <div class="table-viewer-tr"><span *ngIf="(eafStore.state$ | async).tier.annotations.get(id).start && (eafStore.state$ | async).tier.annotations.get(id).end">{{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).start, (eafStore.state$ | async).tier.annotations.get(id).end)) }}</span></div>
   </ng-template>
 </div>

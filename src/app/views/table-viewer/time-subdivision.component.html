@@ -1,59 +1,59 @@
 <div class="table-viewer annotation" [ngClass]="{'active': (eafStore.state$ | async).activeIds.indexOf(id) > -1 }">
   <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).type === 'ref' && (eafStore.state$ | async).tier.annotations.get(id).ref !== null">
-    <div>{{ row }}</div>
-    <div>{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
-    <div>
+    <div class="table-viewer-tr">{{ row }}</div>
+    <div class="table-viewer-tr">{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
+    <div class="table-viewer-tr">
       <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start">
         {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start.time) }}
       </ng-template>
     </div>
-    <div>
+    <div class="table-viewer-tr">
       <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_end">
         {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_end.time) }}
       </ng-template>
     </div>
-    <div>
+    <div class="table-viewer-tr">
         <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start && (eafStore.state$ | async).tier.annotations.get(id).custom_end">
           {{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start, (eafStore.state$ | async).tier.annotations.get(id).custom_end)) }}
         </ng-template>
     </div>
   </ng-template>
   <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).type === 'alignable' && (eafStore.state$ | async).tier.annotations.get(id).custom_start === null">
-      <div>{{ row }}</div>
-      <div>{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
-      <div>
-        <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).start">
-          {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).start.time) }}
-        </ng-template>
-      </div>
-      <div>
-        <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).end">
-          {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).end.time) }}
-        </ng-template>
-      </div>
-      <div>
-          <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).start && (eafStore.state$ | async).tier.annotations.get(id).end">
-            {{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).start, (eafStore.state$ | async).tier.annotations.get(id).end)) }}
-          </ng-template>
-      </div>
-    </ng-template>
-    <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).type === 'alignable' && (eafStore.state$ | async).tier.annotations.get(id).custom_start !== null">
-        <div>{{ row }}</div>
-        <div>{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
-        <div>
-          <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start">
-            {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start.time) }}
-          </ng-template>
-        </div>
-        <div>
-          <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_end">
-            {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_end.time) }}
-          </ng-template>
-        </div>
-        <div>
-            <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start && (eafStore.state$ | async).tier.annotations.get(id).custom_end">
-              {{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start, (eafStore.state$ | async).tier.annotations.get(id).custom_end)) }}
-            </ng-template>
-        </div>
+    <div class="table-viewer-tr">{{ row }}</div>
+    <div class="table-viewer-tr">{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
+    <div class="table-viewer-tr">
+      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).start">
+        {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).start.time) }}
       </ng-template>
+    </div>
+    <div class="table-viewer-tr">
+      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).end">
+        {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).end.time) }}
+      </ng-template>
+    </div>
+    <div class="table-viewer-tr">
+      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).start && (eafStore.state$ | async).tier.annotations.get(id).end">
+        {{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).start, (eafStore.state$ | async).tier.annotations.get(id).end)) }}
+      </ng-template>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).type === 'alignable' && (eafStore.state$ | async).tier.annotations.get(id).custom_start !== null">
+    <div class="table-viewer-tr">{{ row }}</div>
+    <div class="table-viewer-tr">{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
+    <div class="table-viewer-tr">
+      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start">
+        {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start.time) }}
+      </ng-template>
+    </div>
+    <div class="table-viewer-tr">
+      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_end">
+        {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_end.time) }}
+      </ng-template>
+    </div>
+    <div class="table-viewer-tr">
+        <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start && (eafStore.state$ | async).tier.annotations.get(id).custom_end">
+          {{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start, (eafStore.state$ | async).tier.annotations.get(id).custom_end)) }}
+        </ng-template>
+    </div>
+  </ng-template>
 </div>

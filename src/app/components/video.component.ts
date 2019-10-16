@@ -54,6 +54,8 @@ export class VideoComponent implements AfterViewInit {
 
     // we use miliseconds but video player uses seconds
     // convert and set time
+    console.log(time);
+    console.log(this.videoPlayer.nativeElement.currentTime);
     this.videoPlayer.nativeElement.currentTime = (time / 1000);
   }
 
