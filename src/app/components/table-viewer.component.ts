@@ -8,7 +8,7 @@ import { OrderedValue } from '@fav-models/ordered-map';
 import { EafAlignableAnnotation } from '@fav-models/eaf/alignable-annotation';
 import { EafRefAnnotation } from '@fav-models/eaf/ref-annotation';
 import { EafMedia } from '@fav-models/eaf/media';
-import { ShowTimestampsStore } from '@fav-stores/show-timestamps-store';
+import { SettingsStore } from '@fav-stores/settings-store';
 
 @Component({
   selector: 'app-table-viewer',
@@ -19,22 +19,33 @@ export class TableViewerComponent implements OnInit {
 
   @ViewChild('videoPlayer', { static: false }) videoPlayer: VideoComponent;
 
+  width: number = 100;
+  height: number = 100;
   showTimestamps: boolean;
-  mediaSource: EafMedia;
+
   video: EafMedia;
   audio: EafMedia;
+  mediaSource: EafMedia;
 
-  constructor(public eafStore: EafStore, public showTimestampsStore: ShowTimestampsStore) {}
+  constructor(public eafStore: EafStore, public settingsStore: SettingsStore) {}
 
   /**
    * NG On Init
    */
   ngOnInit() {
 
-    let showTimestampsObserver = this.showTimestampsStore.state$.subscribe((data) => {
+    let settingsObserver = this.settingsStore.state$.subscribe((data) => {
 
       if (data.showTimestamps) {
         this.showTimestamps = data.showTimestamps;
+      }
+
+      if (data.width) {
+        this.width = data.width;
+      }
+
+      if (data.height) {
+        this.height = data.height;
       }
     });
 
@@ -191,6 +202,15 @@ export class TableViewerComponent implements OnInit {
 
   annotationOrder(a: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>, b: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>): number {
     return b.value.rank > a.value.rank ? -1 : (a.value.rank > b.value.rank ? 1 : 0);
+  }
+
+  getDimensions() {
+
+    return {
+
+      width: this.width + '%',
+      height: this.height + '%'
+    };
   }
 
   dump(data) {

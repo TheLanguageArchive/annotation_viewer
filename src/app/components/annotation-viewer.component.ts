@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ApiUrlStore } from '@fav-stores/api-url-store';
-import { ShowTimestampsStore } from '@fav-stores/show-timestamps-store';
+import { SettingsStore } from '@fav-stores/settings-store';
 import { EafStore } from '@fav-stores/eaf-store';
 
 @Component({
@@ -13,13 +12,24 @@ export class AnnotationViewerComponent implements OnInit {
   title = 'Annotation Viewer';
   @Input('url') url: string;
   @Input('show-timestamps') showTimestamps: string;
+  @Input('width') width: string;
+  @Input('height') height: string;
 
-  constructor(private apiUrlStore: ApiUrlStore, private showTimestampsStore: ShowTimestampsStore, private eafStore: EafStore) {}
+  constructor(private settingsStore: SettingsStore, private eafStore: EafStore) {}
 
   ngOnInit() {
 
-    this.apiUrlStore.setUrl(this.url);
-    this.showTimestampsStore.setShowTimestamps(this.showTimestamps == 'true');
+    this.settingsStore.setUrl(this.url);
+    this.settingsStore.setShowTimestamps(this.showTimestamps == 'true');
+
+    if (this.width) {
+      this.settingsStore.setWidth(+this.width);
+    }
+
+    if (this.height) {
+      this.settingsStore.setHeight(+this.height);
+    }
+
     this.eafStore.buildInitialState();
   }
 }

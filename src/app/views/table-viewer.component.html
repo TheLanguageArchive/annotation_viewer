@@ -1,21 +1,24 @@
+<div *ngIf="!((eafStore.state$ | async).tier)">
+    <app-loading></app-loading>
+</div>
 <div *ngIf="(eafStore.state$ | async).tier">
     <ng-template [ngIf]="mediaSource && mediaSource.mimetype == 'video/mp4'">
-        <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)"></app-video>
+        <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)" width="{{ this.width }}"></app-video>
     </ng-template>
     <ng-template [ngIf]="mediaSource && mediaSource.mimetype == 'audio/x-wav'">
-        <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)"></app-video>
+        <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)" width="{{ this.width }}"></app-video>
     </ng-template>
     <div>
-        <select class="media-selector" (change)="changeMedia($event)">
+        <select class="media-selector" (change)="changeMedia($event)" [ngStyle]="{ 'width': width + '%'}">
             <option *ngFor="let iter of (eafStore.state$ | async).eaf.header.media" [value]="iter.mimetype">{{ iter.mimetype }}</option>
         </select>
     </div>
     <div>
-        <select class="tier-names" (change)="changeTier($event)">
+        <select class="tier-names" (change)="changeTier($event)" [ngStyle]="{ 'width': width + '%'}">
             <option *ngFor="let iter of ((eafStore.state$ | async).eaf.tiers) | keyvalue: tierOrder" [value]="iter.value.value.id">{{ iter.value.value.id }}</option>
         </select>
     </div>
-    <div class="table-viewer">
+    <div class="table-viewer" [ngStyle]="getDimensions()">
         <div class="th">Nr</div>
         <div class="th">Annotation</div>
         <div class="th"><span *ngIf="showTimestamps == true">Begin Time</span></div>

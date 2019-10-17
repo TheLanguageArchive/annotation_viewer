@@ -2,16 +2,16 @@ import { OnInit } from '@angular/core';
 import TimeFormat from 'hh-mm-ss';
 import { EafStore } from '@fav-stores/eaf-store';
 import { EafTimeslot } from '@fav-models/eaf/timeslot';
-import { ShowTimestampsStore } from '@fav-stores/show-timestamps-store';
+import { SettingsStore } from '@fav-stores/settings-store';
 
 export class AbstractComponent implements OnInit {
 
   showTimestamps: boolean;
-  constructor(public eafStore: EafStore, public showTimestampsStore: ShowTimestampsStore) {}
+  constructor(public eafStore: EafStore, public settingsStore: SettingsStore) {}
 
   ngOnInit() {
 
-    let showTimestampsObserver = this.showTimestampsStore.state$.subscribe((data) => {
+    let settingsObserver = this.settingsStore.state$.subscribe((data) => {
 
       if (data.showTimestamps) {
         this.showTimestamps = data.showTimestamps as boolean;

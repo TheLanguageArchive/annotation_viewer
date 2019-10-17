@@ -10,6 +10,7 @@ export class VideoComponent implements AfterViewInit {
   @ViewChild('videoPlayer', { static: true }) videoPlayer: ElementRef;
   @Input() url: string;
   @Input() mimetype: string;
+  @Input() width: number;
   @Output() progress: EventEmitter<number> = new EventEmitter<number>();
 
   private progressTracker: any;

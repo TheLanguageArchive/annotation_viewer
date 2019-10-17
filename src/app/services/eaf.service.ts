@@ -5,19 +5,19 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Eaf } from '@fav-models/eaf';
 import { MessageService } from '@fav-services/message.service';
 import { SerializeEaf } from '@fav-models/serializers/eaf';
-import { ApiUrlStore } from '@fav-stores/api-url-store';
+import { SettingsStore } from '@fav-stores/settings-store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EafService {
 
-  constructor(private apiUrlStore: ApiUrlStore, private http: HttpClient, private messageService: MessageService) { }
+  constructor(private settingsStore: SettingsStore, private http: HttpClient, private messageService: MessageService) { }
 
   fetch(): Observable<Eaf> {
 
     return this.http
-      .get(this.apiUrlStore.state.url)
+      .get(this.settingsStore.state.url)
       .pipe(
         map(data => SerializeEaf(data as Eaf)),
         tap(_ => this.messageService.add('fetched accommodations')),
