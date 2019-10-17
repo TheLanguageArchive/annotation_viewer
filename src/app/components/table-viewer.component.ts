@@ -74,13 +74,13 @@ export class TableViewerComponent implements OnInit {
    */
   changeMedia(event: Event) {
 
-    let mimetype = (event.target as HTMLInputElement).value;
+    let type = (event.target as HTMLInputElement).value;
 
-    if (mimetype === 'video/mp4') {
+    if (type === 'video') {
       this.mediaSource = this.video;
     }
 
-    if (mimetype === 'audio/x-wav') {
+    if (type === 'audio') {
       this.mediaSource = this.audio;
     }
   }
