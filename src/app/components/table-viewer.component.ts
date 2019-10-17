@@ -7,6 +7,8 @@ import { EafTier } from '@fav-models/eaf/tier';
 import { OrderedValue } from '@fav-models/ordered-map';
 import { EafAlignableAnnotation } from '@fav-models/eaf/alignable-annotation';
 import { EafRefAnnotation } from '@fav-models/eaf/ref-annotation';
+import { EafMedia } from '@fav-models/eaf/media';
+import { ShowTimestampsStore } from '@fav-stores/show-timestamps-store';
 
 @Component({
   selector: 'app-table-viewer',
@@ -17,12 +19,60 @@ export class TableViewerComponent implements OnInit {
 
   @ViewChild('videoPlayer', { static: false }) videoPlayer: VideoComponent;
 
-  constructor(public eafStore: EafStore) {}
+  showTimestamps: boolean;
+  mediaSource: EafMedia;
+  video: EafMedia;
+  audio: EafMedia;
+
+  constructor(public eafStore: EafStore, public showTimestampsStore: ShowTimestampsStore) {}
 
   /**
    * NG On Init
    */
-  ngOnInit() {}
+  ngOnInit() {
+
+    let showTimestampsObserver = this.showTimestampsStore.state$.subscribe((data) => {
+
+      if (data.showTimestamps) {
+        this.showTimestamps = data.showTimestamps;
+      }
+    });
+
+    let eafObserver = this.eafStore.state$.subscribe((data) => {
+
+      if (data.eaf) {
+
+        this.video = data.eaf.header.video;
+        this.audio = data.eaf.header.audio;
+
+        if (this.video) {
+          this.mediaSource = this.video;
+        } else if (this.audio) {
+          this.mediaSource = this.audio;
+        }
+
+        eafObserver.unsubscribe();
+      }
+    });
+  }
+
+  /**
+   * Changing media
+   *
+   * @param mimetype string
+   */
+  changeMedia(event: Event) {
+
+    let mimetype = (event.target as HTMLInputElement).value;
+
+    if (mimetype === 'video/mp4') {
+      this.mediaSource = this.video;
+    }
+
+    if (mimetype === 'audio/x-wav') {
+      this.mediaSource = this.audio;
+    }
+  }
 
   /**
    * Video Component sends this method the current time

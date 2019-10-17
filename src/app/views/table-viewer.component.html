@@ -1,7 +1,15 @@
 <div *ngIf="(eafStore.state$ | async).tier">
-    <ng-template [ngIf]="(eafStore.state$ | async).eaf.header.video">
-        <app-video #videoPlayer url="{{ (eafStore.state$ | async).eaf.header.video.url }}" mimetype="{{ (eafStore.state$ | async).eaf.header.video.mimetype }}" (progress)="progressTracker($event)"></app-video>
+    <ng-template [ngIf]="mediaSource && mediaSource.mimetype == 'video/mp4'">
+        <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)"></app-video>
     </ng-template>
+    <ng-template [ngIf]="mediaSource && mediaSource.mimetype == 'audio/x-wav'">
+        <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)"></app-video>
+    </ng-template>
+    <div>
+        <select class="media-selector" (change)="changeMedia($event)">
+            <option *ngFor="let iter of (eafStore.state$ | async).eaf.header.media" [value]="iter.mimetype">{{ iter.mimetype }}</option>
+        </select>
+    </div>
     <div>
         <select class="tier-names" (change)="changeTier($event)">
             <option *ngFor="let iter of ((eafStore.state$ | async).eaf.tiers) | keyvalue: tierOrder" [value]="iter.value.value.id">{{ iter.value.value.id }}</option>
@@ -10,9 +18,9 @@
     <div class="table-viewer">
         <div class="th">Nr</div>
         <div class="th">Annotation</div>
-        <div class="th">Begin Time</div>
-        <div class="th">End Time</div>
-        <div class="th">Duration</div>
+        <div class="th"><span *ngIf="showTimestamps == true">Begin Time</span></div>
+        <div class="th"><span *ngIf="showTimestamps == true">End Time</span></div>
+        <div class="th"><span *ngIf="showTimestamps == true">Duration</span></div>
     </div>
     <div *ngFor="let iter of ((eafStore.state$ | async).tier.annotations) | keyvalue: annotationOrder; let i = index" (click)="activateAnnotation(iter.value.value.id)">
         <ng-template [ngIf]="(eafStore.state$ | async).tier.linguistic_type === 'toplevel'">

@@ -12,8 +12,9 @@ import { SymbolicSubdivisionComponent } from '@fav-components/table-viewer/symbo
 import { TimeSubdivisionComponent } from '@fav-components/table-viewer/time-subdivision.component';
 import { SymbolicAssociationComponent } from '@fav-components/table-viewer/symbolic-association.component';
 import { IncludedInComponent } from '@fav-components/table-viewer/included-in.component';
-import { EafStore } from '@fav-stores/eaf-store';
 import { ApiUrlStore } from '@fav-stores/api-url-store';
+import { ShowTimestampsStore } from '@fav-stores/show-timestamps-store';
+import { EafStore } from '@fav-stores/eaf-store';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { ApiUrlStore } from '@fav-stores/api-url-store';
     HttpClientModule
   ],
   entryComponents: [AnnotationViewerComponent],
-  providers: [EafStore, ApiUrlStore],
+  providers: [ApiUrlStore, ShowTimestampsStore, EafStore],
 })
 export class AppModule {
 

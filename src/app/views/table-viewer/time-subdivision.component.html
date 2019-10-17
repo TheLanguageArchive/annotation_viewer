@@ -3,17 +3,17 @@
     <div class="table-viewer-tr">{{ row }}</div>
     <div class="table-viewer-tr">{{ (eafStore.state$ | async).tier.annotations.get(id).value }}</div>
     <div class="table-viewer-tr">
-      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start">
+      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start && showTimestamps == true">
         {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start.time) }}
       </ng-template>
     </div>
     <div class="table-viewer-tr">
-      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_end">
+      <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_end && showTimestamps == true">
         {{ formatDuration((eafStore.state$ | async).tier.annotations.get(id).custom_end.time) }}
       </ng-template>
     </div>
     <div class="table-viewer-tr">
-        <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start && (eafStore.state$ | async).tier.annotations.get(id).custom_end">
+        <ng-template [ngIf]="(eafStore.state$ | async).tier.annotations.get(id).custom_start && (eafStore.state$ | async).tier.annotations.get(id).custom_end && showTimestamps == true">
           {{ formatDuration(getDuration((eafStore.state$ | async).tier.annotations.get(id).custom_start, (eafStore.state$ | async).tier.annotations.get(id).custom_end)) }}
         </ng-template>
     </div>
