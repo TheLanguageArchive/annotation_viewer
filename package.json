@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~9.0.0-next.2",
     "@angular/platform-browser-dynamic": "~9.0.0-next.2",
     "@angular/router": "~9.0.0-next.2",
+    "angular2-hotkeys": "^2.1.5",
     "concat": "^1.0.3",
     "core-js": "^2.5.4",
     "fs-extra": "^8.1.0",

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import TimeFormat from 'hh-mm-ss';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+
 import { VideoComponent } from '@fav-components/video.component';
 import { EafStore } from '@fav-stores/eaf-store';
 import { KeyValue } from '@angular/common';
@@ -27,7 +28,20 @@ export class TableViewerComponent implements OnInit {
   audio: EafMedia;
   mediaSource: EafMedia;
 
-  constructor(public eafStore: EafStore, public settingsStore: SettingsStore) {}
+  constructor(public eafStore: EafStore, public settingsStore: SettingsStore, private hotkeys: HotkeysService) {
+
+    this.hotkeys.add(new Hotkey('p', (event: KeyboardEvent): boolean => {
+
+      this.videoPlayer.play();
+      return false;
+    }));
+
+    this.hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
+
+      this.videoPlayer.toggleMute();
+      return false;
+    }));
+  }
 
   /**
    * NG On Init

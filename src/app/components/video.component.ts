@@ -67,6 +67,27 @@ export class VideoComponent implements AfterViewInit {
     return this.videoPlayer.nativeElement.currentTime * 1000;
   }
 
+  play() {
+
+    if (this.videoPlayer.nativeElement.paused) {
+      this.videoPlayer.nativeElement.play();
+    } else {
+      this.videoPlayer.nativeElement.pause();
+    }
+  }
+
+  mute() {
+    this.videoPlayer.nativeElement.muted = true;
+  }
+
+  unmute() {
+    this.videoPlayer.nativeElement.muted = false;
+  }
+
+  toggleMute() {
+    this.videoPlayer.nativeElement.muted = !this.videoPlayer.nativeElement.muted;
+  }
+
   ngDestroy() {
 
     if (this.playListener) {

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { HttpClientModule } from '@angular/common/http';
+import { HotkeyModule } from 'angular2-hotkeys';
 
 import { AnnotationViewerComponent } from '@fav-components/annotation-viewer.component';
 import { TableViewerComponent } from '@fav-components/table-viewer.component';
@@ -31,7 +32,8 @@ import { LoadingComponent } from '@fav-components/loading.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    HotkeyModule.forRoot()
   ],
   entryComponents: [AnnotationViewerComponent],
   providers: [SettingsStore, EafStore],
