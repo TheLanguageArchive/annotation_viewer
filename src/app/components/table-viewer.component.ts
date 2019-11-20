@@ -21,13 +21,12 @@ export class TableViewerComponent implements OnInit {
 
   @ViewChild('videoPlayer', { static: false }) videoPlayer: VideoComponent;
 
-  width: number = 100;
-  height: number = 100;
-  showTimestamps: boolean;
-
-  tier: EafTier;
-  eaf: Eaf;
-  mediaSource: EafMedia;
+  showTimestamps: boolean = true;
+  width: number           = 100;
+  height: number          = 100;
+  tier: EafTier           = null;
+  eaf: Eaf                = null;
+  mediaSource: EafMedia   = null;
 
   constructor(public eafStore: EafStore, public settingsStore: SettingsStore, private hotkeys: HotkeysService) {
 
@@ -198,7 +197,9 @@ export class TableViewerComponent implements OnInit {
       }
     }
 
-    this.videoPlayer.setPlayTime(time);
+    if (this.videoPlayer) {
+      this.videoPlayer.setPlayTime(time);
+    }
   }
 
   /**
@@ -211,7 +212,10 @@ export class TableViewerComponent implements OnInit {
   changeTier(event: Event) {
 
     this.eafStore.setTier((event.target as HTMLInputElement).value);
-    this.progressTracker(this.videoPlayer.getPlayTime());
+
+    if (this.videoPlayer) {
+      this.progressTracker(this.videoPlayer.getPlayTime());
+    }
   }
 
   tierOrder(a: KeyValue<string, OrderedValue<EafTier>>, b: KeyValue<string, OrderedValue<EafTier>>): number {
@@ -228,6 +232,20 @@ export class TableViewerComponent implements OnInit {
 
       width: this.width + '%',
       height: this.height + '%'
+    };
+  }
+
+  getWidth() {
+
+    return {
+      width: this.width + '%',
+    };
+  }
+
+  getHeight() {
+
+    return {
+      height: this.height + '%',
     };
   }
 
