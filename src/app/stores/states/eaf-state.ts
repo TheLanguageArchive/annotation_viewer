@@ -6,4 +6,5 @@ export class EafState {
     eaf: Eaf;
     tier: EafTier;
     activeIds: string[];
+    action: string;
 }

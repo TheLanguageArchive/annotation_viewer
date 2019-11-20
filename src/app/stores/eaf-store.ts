@@ -22,7 +22,9 @@ export class EafStore extends Store<EafState> {
 
             // and setting initial state
             this.setState({
+
                 ...this.state,
+                action: 'initialize',
                 eaf,
                 tier: tier,
                 activeIds: [annotation.id]
@@ -33,7 +35,9 @@ export class EafStore extends Store<EafState> {
     setTier(tierId: string): void {
 
         this.setState({
+
             ...this.state,
+            action: 'set-tier',
             tier: this.state.eaf.tiers.get(tierId)
         });
     }
@@ -41,7 +45,9 @@ export class EafStore extends Store<EafState> {
     activateAnnotations(annotationIds: string[]) {
 
         this.setState({
+
             ...this.state,
+            action: 'activate-annotations',
             activeIds: annotationIds
         });
     }

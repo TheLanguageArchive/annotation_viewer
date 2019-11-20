@@ -8,6 +8,7 @@ import { EafTier } from '@fav-models/eaf/tier';
 import { OrderedValue } from '@fav-models/ordered-map';
 import { EafAlignableAnnotation } from '@fav-models/eaf/alignable-annotation';
 import { EafRefAnnotation } from '@fav-models/eaf/ref-annotation';
+import { Eaf } from '@fav-models/eaf';
 import { EafMedia } from '@fav-models/eaf/media';
 import { SettingsStore } from '@fav-stores/settings-store';
 
@@ -24,21 +25,27 @@ export class TableViewerComponent implements OnInit {
   height: number = 100;
   showTimestamps: boolean;
 
-  video: EafMedia;
-  audio: EafMedia;
+  tier: EafTier;
+  eaf: Eaf;
   mediaSource: EafMedia;
 
   constructor(public eafStore: EafStore, public settingsStore: SettingsStore, private hotkeys: HotkeysService) {
 
     this.hotkeys.add(new Hotkey('p', (event: KeyboardEvent): boolean => {
 
-      this.videoPlayer.play();
+      if (this.videoPlayer) {
+        this.videoPlayer.play();
+      }
+
       return false;
     }));
 
     this.hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
 
-      this.videoPlayer.toggleMute();
+      if (this.videoPlayer) {
+        this.videoPlayer.toggleMute();
+      }
+
       return false;
     }));
   }
@@ -65,18 +72,18 @@ export class TableViewerComponent implements OnInit {
 
     let eafObserver = this.eafStore.state$.subscribe((data) => {
 
-      if (data.eaf) {
+      if (data.action === 'initialize') {
 
-        this.video = data.eaf.header.video;
-        this.audio = data.eaf.header.audio;
+        this.tier = data.tier;
+        this.eaf  = data.eaf;
 
-        if (this.video) {
-          this.mediaSource = this.video;
-        } else if (this.audio) {
-          this.mediaSource = this.audio;
+        if (this.eaf.header.media.first()) {
+          this.mediaSource = this.eaf.header.media.first();
         }
+      }
 
-        eafObserver.unsubscribe();
+      if (data.action === 'set-tier') {
+        this.tier = data.tier;
       }
     });
   }
@@ -88,14 +95,11 @@ export class TableViewerComponent implements OnInit {
    */
   changeMedia(event: Event) {
 
-    let type = (event.target as HTMLInputElement).value;
+    let id     = (event.target as HTMLInputElement).value;
+    let source = this.eaf.header.media.fetch(parseInt(id));
 
-    if (type === 'video') {
-      this.mediaSource = this.video;
-    }
-
-    if (type === 'audio') {
-      this.mediaSource = this.audio;
+    if (null !== source) {
+      this.mediaSource = source;
     }
   }
 

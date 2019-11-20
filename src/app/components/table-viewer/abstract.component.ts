@@ -3,10 +3,14 @@ import TimeFormat from 'hh-mm-ss';
 import { EafStore } from '@fav-stores/eaf-store';
 import { EafTimeslot } from '@fav-models/eaf/timeslot';
 import { SettingsStore } from '@fav-stores/settings-store';
+import { EafTier } from '@fav/app/models/eaf/tier';
 
 export class AbstractComponent implements OnInit {
 
+  tier: EafTier;
+  activeIds: string[];
   showTimestamps: boolean;
+
   constructor(public eafStore: EafStore, public settingsStore: SettingsStore) {}
 
   ngOnInit() {
@@ -15,6 +19,23 @@ export class AbstractComponent implements OnInit {
 
       if (data.showTimestamps) {
         this.showTimestamps = data.showTimestamps as boolean;
+      }
+    });
+
+    let eafObserver = this.eafStore.state$.subscribe((data) => {
+
+      if (data.action === 'initialize') {
+
+        this.tier      = data.tier;
+        this.activeIds = data.activeIds;
+      }
+
+      if (data.action === 'set-tier') {
+        this.tier = data.tier;
+      }
+
+      if (data.action === 'activate-annotations') {
+        this.activeIds = data.activeIds;
       }
     });
   }
