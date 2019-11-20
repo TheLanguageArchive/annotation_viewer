@@ -16,7 +16,6 @@ import { IncludedInComponent } from '@fav-components/table-viewer/included-in.co
 import { SettingsStore } from '@fav-stores/settings-store';
 import { EafStore } from '@fav-stores/eaf-store';
 import { LoadingComponent } from '@fav-components/loading.component';
-import { MediaComponent } from './components/media.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,6 @@ import { MediaComponent } from './components/media.component';
     TimeSubdivisionComponent,
     IncludedInComponent,
     LoadingComponent,
-    MediaComponent
   ],
   imports: [
     BrowserModule,
