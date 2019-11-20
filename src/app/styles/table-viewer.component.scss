@@ -1,3 +1,13 @@
 .tier-names {
     width: 100%;
 }
+
+.select-block {
+
+    display: flex;
+    align-content: stretch;
+
+    span {
+        width: 10%;
+    }
+}

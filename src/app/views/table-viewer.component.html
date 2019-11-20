@@ -6,14 +6,19 @@
 
     <div *ngIf="0 === eaf.header.media.count()">No streaming media source available or accessible.</div>
     <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)" width="{{ this.width }}" *ngIf="mediaSource"></app-video>
-    <div *ngIf="eaf.header.media.count() > 1">
-        <select class="media-selector" (change)="changeMedia($event)" [ngStyle]="{ 'width': width + '%'}">
+    <div>
+        {{ showTimestamps ? 'Hide' : 'Show' }} timestamps <input type="checkbox" (change)="toggleShowTimestamps($event)" />
+    </div>
+    <div class="select-block" *ngIf="eaf.header.media.count() > 1" [ngStyle]="getWidth()">
+        <span>Select media:</span>
+        <select class="media-selector" (change)="changeMedia($event)">
             <option *ngFor="let iter of eaf.header.media.media()" [value]="iter.id">{{ iter.mimetype }}</option>
         </select>
     </div>
 
-    <div>
-        <select class="tier-names" (change)="changeTier($event)" [ngStyle]="{ 'width': width + '%'}">
+    <div class="select-block" [ngStyle]="getWidth()">
+        <span>Select tier:</span>
+        <select class="tier-names" (change)="changeTier($event)">
             <option *ngFor="let iter of eaf.tiers | keyvalue: tierOrder" [value]="iter.value.value.id">{{ iter.value.value.id }}</option>
         </select>
     </div>

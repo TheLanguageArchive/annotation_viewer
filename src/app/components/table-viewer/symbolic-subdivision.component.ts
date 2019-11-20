@@ -25,8 +25,12 @@ export class SymbolicSubdivisionComponent implements OnInit {
 
     let settingsObserver = this.settingsStore.state$.subscribe((data) => {
 
-      if (data.showTimestamps) {
-        this.showTimestamps = data.showTimestamps as boolean;
+      if (data.action === 'initialize') {
+        this.showTimestamps = data.showTimestamps;
+      }
+
+      if (data.action === 'toggle-show-timestamps') {
+        this.showTimestamps = data.showTimestamps;
       }
     });
 

@@ -19,17 +19,7 @@ export class AnnotationViewerComponent implements OnInit {
 
   ngOnInit() {
 
-    this.settingsStore.setUrl(this.url);
-    this.settingsStore.setShowTimestamps(this.showTimestamps == 'true');
-
-    if (this.width) {
-      this.settingsStore.setWidth(+this.width);
-    }
-
-    if (this.height) {
-      this.settingsStore.setHeight(+this.height);
-    }
-
+    this.settingsStore.buildInitialState(this.url, +this.width, +this.height, this.showTimestamps == 'true');
     this.eafStore.buildInitialState();
   }
 }

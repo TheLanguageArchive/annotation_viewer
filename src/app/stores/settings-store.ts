@@ -9,10 +9,25 @@ export class SettingsStore extends Store<SettingsState> {
         super(new SettingsState());
     }
 
+    buildInitialState(url: string, width: number, height: number, showTimestamps: boolean) {
+
+        this.setState({
+
+            ...this.state,
+            action: 'initialize',
+            url: url,
+            width: width,
+            height: height,
+            showTimestamps: showTimestamps,
+        });
+    }
+
     setUrl(url: string): void {
 
         this.setState({
+
             ...this.state,
+            action: 'set-url',
             url: url
         });
     }
@@ -20,7 +35,9 @@ export class SettingsStore extends Store<SettingsState> {
     setWidth(width: number): void {
 
         this.setState({
+
             ...this.state,
+            action: 'set-width',
             width: width
         });
     }
@@ -28,16 +45,20 @@ export class SettingsStore extends Store<SettingsState> {
     setHeight(height: number): void {
 
         this.setState({
+
             ...this.state,
+            action: 'set-height',
             height: height
         });
     }
 
-    setShowTimestamps(showTimestamps: boolean): void {
+    toggleShowTimestamps(): void {
 
         this.setState({
+
             ...this.state,
-            showTimestamps: showTimestamps
+            action: 'toggle-show-timestamps',
+            showTimestamps: !this.state.showTimestamps
         });
     }
 }

@@ -4,4 +4,5 @@ export class SettingsState {
     width: number = 100;
     height: number = 100;
     showTimestamps: boolean;
+    action: string;
 }

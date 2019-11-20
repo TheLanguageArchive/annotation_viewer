@@ -28,7 +28,7 @@ export class TableViewerComponent implements OnInit {
   eaf: Eaf                = null;
   mediaSource: EafMedia   = null;
 
-  constructor(public eafStore: EafStore, public settingsStore: SettingsStore, private hotkeys: HotkeysService) {
+  constructor(private eafStore: EafStore, private settingsStore: SettingsStore, private hotkeys: HotkeysService) {
 
     this.hotkeys.add(new Hotkey('p', (event: KeyboardEvent): boolean => {
 
@@ -56,16 +56,23 @@ export class TableViewerComponent implements OnInit {
 
     let settingsObserver = this.settingsStore.state$.subscribe((data) => {
 
-      if (data.showTimestamps) {
+      if (data.action === 'initialize') {
+
         this.showTimestamps = data.showTimestamps;
+        this.width = data.width;
+        this.height = data.height;
       }
 
-      if (data.width) {
+      if (data.action === 'set-width') {
         this.width = data.width;
       }
 
-      if (data.height) {
+      if (data.action === 'set-height') {
         this.height = data.height;
+      }
+
+      if (data.action === 'toggle-show-timestamps') {
+        this.showTimestamps = data.showTimestamps;
       }
     });
 
@@ -216,6 +223,10 @@ export class TableViewerComponent implements OnInit {
     if (this.videoPlayer) {
       this.progressTracker(this.videoPlayer.getPlayTime());
     }
+  }
+
+  toggleShowTimestamps() {
+    this.settingsStore.toggleShowTimestamps();
   }
 
   tierOrder(a: KeyValue<string, OrderedValue<EafTier>>, b: KeyValue<string, OrderedValue<EafTier>>): number {
