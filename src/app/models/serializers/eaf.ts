@@ -8,13 +8,17 @@ import { EafTimeslot } from '@fav-models/eaf/timeslot';
 import { EafAlignableAnnotation } from '@fav-models/eaf/alignable-annotation';
 import { EafRefAnnotation } from '@fav-models/eaf/ref-annotation';
 import { EafTier } from '@fav-models/eaf/tier';
+import { EafInterface } from '@fav-models/eaf/interface';
+import { EafMediaManager } from '@fav-models/eaf/media-manager';
 
-export function SerializeEaf(eaf: Eaf) {
+export function SerializeEaf(eaf: EafInterface) {
 
     let media = [];
-    for (let item of eaf.header.media) {
-        media.push(new EafMedia(item.url, item.mimetype, item.relative));
+    for (let item of eaf.header.media.media) {
+        media.push(new EafMedia(item.id, item.url, item.mimetype, item.relative, item.audio));
     }
+
+    let mediaManager = new EafMediaManager(media, eaf.header.media.count, eaf.header.media.first);
 
     let properties = [];
     for (let item of eaf.header.properties) {
@@ -22,7 +26,7 @@ export function SerializeEaf(eaf: Eaf) {
     }
 
     let metadata  = new EafMetadata(eaf.metadata.author, eaf.metadata.date, eaf.metadata.format, eaf.metadata.version);
-    let header    = new EafHeader(eaf.header.mediafile, eaf.header.timeunits, media, eaf.header.video, eaf.header.audio, properties);
+    let header    = new EafHeader(eaf.header.mediafile, eaf.header.timeunits, mediaManager, properties);
 
     let timeslots = new OrderedMap<string, EafTimeslot>();
     for (let id in eaf.timeslots) {

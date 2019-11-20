@@ -38,7 +38,8 @@ export class EafStore extends Store<EafState> {
 
             ...this.state,
             action: 'set-tier',
-            tier: this.state.eaf.tiers.get(tierId)
+            tier: this.state.eaf.tiers.get(tierId),
+            activeIds: [],
         });
     }
 

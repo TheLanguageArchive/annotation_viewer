@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Eaf } from '@fav-models/eaf';
+import { EafInterface } from '@fav-models/eaf/interface';
 import { MessageService } from '@fav-services/message.service';
 import { SerializeEaf } from '@fav-models/serializers/eaf';
 import { SettingsStore } from '@fav-stores/settings-store';
@@ -19,7 +20,7 @@ export class EafService {
     return this.http
       .get(this.settingsStore.state.url)
       .pipe(
-        map(data => SerializeEaf(data as Eaf)),
+        map(data => SerializeEaf(data as EafInterface)),
         tap(_ => this.messageService.add('fetched accommodations')),
         catchError(this.handleError<Eaf>('fetch', null))
       );
