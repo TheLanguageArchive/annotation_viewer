@@ -9,6 +9,7 @@
         <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)" width="{{ this.width }}"></app-video>
     </ng-template>
     <div>
+
         <select class="media-selector" (change)="changeMedia($event)" [ngStyle]="{ 'width': width + '%'}">
             <option *ngFor="let iter of (eafStore.state$ | async).eaf.header.media" [value]="iter.audio == false ? 'video' : 'audio'">{{ iter.mimetype }}</option>
         </select>
