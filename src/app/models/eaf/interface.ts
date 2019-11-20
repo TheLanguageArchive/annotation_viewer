@@ -51,6 +51,7 @@ export interface EafAlignableAnnotationInterface {
     end: EafTimeslotInterface;
     custom_start: EafTimeslotInterface | null;
     custom_end: EafTimeslotInterface | null;
+    ref: null;
 }
 
 export interface EafRefAnnotationInterface {
