@@ -1,9 +1,13 @@
-<div class="table-viewer annotation" [ngClass]="{'active': activeIds.indexOf(id) > -1 }">
-  <ng-template [ngIf]="tier.annotations.get(id).type === 'alignable'">
-    <div class="table-viewer-tr">{{ row }}</div>
-    <div class="table-viewer-tr">{{ tier.annotations.get(id).value }}</div>
-    <div class="table-viewer-tr"><span *ngIf="tier.annotations.get(id).start && showTimestamps == true">{{ formatDuration(tier.annotations.get(id).start.time) }}</span></div>
-    <div class="table-viewer-tr"><span *ngIf="tier.annotations.get(id).end && showTimestamps == true">{{ formatDuration(tier.annotations.get(id).end.time) }}</span></div>
-    <div class="table-viewer-tr"><span *ngIf="tier.annotations.get(id).start && tier.annotations.get(id).end && showTimestamps == true">{{ formatDuration(getDuration(tier.annotations.get(id).start, tier.annotations.get(id).end)) }}</span></div>
-  </ng-template>
+<div *ngIf="tier">
+    <div *ngFor="let iter of tier.annotations | keyvalue: annotationOrder; let i = index;">
+        <div *ngIf="iter.value.value; let annotation" (click)="activateAnnotation(annotation.id)" [ngStyle]="getWidth()">
+            <div class="table-viewer annotation" [ngClass]="{'active': activeIds.indexOf(annotation.id) > -1 }" *ngIf="annotation.type === 'alignable'">
+                <div class="table-viewer-tr">{{ i + 1 }}</div>
+                <div class="table-viewer-tr">{{ annotation.value }}</div>
+                <div class="table-viewer-tr"><span *ngIf="annotation.start && showTimestamps == true">{{ formatDuration(annotation.start.time) }}</span></div>
+                <div class="table-viewer-tr"><span *ngIf="annotation.end && showTimestamps == true">{{ formatDuration(annotation.end.time) }}</span></div>
+                <div class="table-viewer-tr"><span *ngIf="annotation.start && annotation.end && showTimestamps == true">{{ formatDuration(getDuration(annotation.start, annotation.end)) }}</span></div>
+            </div>
+        </div>
+    </div>
 </div>

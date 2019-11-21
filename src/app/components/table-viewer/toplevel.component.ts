@@ -1,40 +1,53 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import TimeFormat from 'hh-mm-ss';
 import { EafTier } from '@fav-models/eaf/tier';
 import { EafStore } from '@fav-stores/eaf-store';
 import { SettingsStore } from '@fav-stores/settings-store';
 import { EafTimeslot } from '@fav/app/models/eaf/timeslot';
+import { Subscription } from 'rxjs';
+import { EafRefAnnotation } from '@fav/app/models/eaf/ref-annotation';
+import { EafAlignableAnnotation } from '@fav/app/models/eaf/alignable-annotation';
+import { KeyValue } from '@angular/common';
+import { OrderedValue } from '@fav/app/models/ordered-map';
 
 @Component({
   selector: 'app-toplevel',
   templateUrl: '../../views/table-viewer/toplevel.component.html',
   styleUrls: ['../../styles/table-viewer/toplevel.component.scss']
 })
-export class ToplevelComponent implements OnInit {
+export class ToplevelComponent implements OnInit, OnDestroy {
 
-  @Input() id: string;
-  @Input() row: string;
+  @Output() annotationActivated = new EventEmitter<number>();
 
   tier: EafTier;
   activeIds: string[];
   showTimestamps: boolean;
 
+  width: number               = 100;
+  subscriptions: Subscription = new Subscription();
+
   constructor(public eafStore: EafStore, public settingsStore: SettingsStore) {}
 
   ngOnInit() {
 
-    let settingsObserver = this.settingsStore.state$.subscribe((data) => {
+    this.subscriptions.add(this.settingsStore.state$.subscribe((data) => {
 
       if (data.action === 'initialize') {
+
+        this.width          = data.width;
         this.showTimestamps = data.showTimestamps;
       }
 
       if (data.action === 'toggle-show-timestamps') {
         this.showTimestamps = data.showTimestamps;
       }
-    });
 
-    let eafObserver = this.eafStore.state$.subscribe((data) => {
+      if (data.action === 'set-width') {
+        this.width = data.width;
+      }
+    }));
+
+    this.subscriptions.add(this.eafStore.state$.subscribe((data) => {
 
       if (data.action === 'initialize') {
 
@@ -49,9 +62,11 @@ export class ToplevelComponent implements OnInit {
       }
 
       if (data.action === 'activate-annotations') {
+
+        this.tier      = data.tier;
         this.activeIds = data.activeIds;
       }
-    });
+    }));
   }
 
   /**
@@ -70,6 +85,63 @@ export class ToplevelComponent implements OnInit {
       } else {
           return end.time - start.time;
       }
+  }
+
+  getWidth() {
+
+    return {
+      width: this.width + '%',
+    };
+  }
+
+  /**
+   * This method allows you to activate an annotation.
+   * It also sets the media player at the correct time.
+   *
+   * @param annotationId
+   */
+  activateAnnotation(annotationId: string) {
+
+    this.eafStore.activateAnnotations([annotationId]);
+
+    let annotation = this.eafStore.state.tier.annotations.get(annotationId);
+    let time       = 0;
+
+    if (annotation.type === 'ref') {
+
+      annotation = annotation as EafRefAnnotation;
+
+      if (annotation.custom_start != null) {
+          time = annotation.custom_start.time;
+      }
+
+      if (annotation.custom_start == null) {
+          time = annotation.referenced_annotation.start.time;
+      }
+    }
+
+    if (annotation.type === 'alignable') {
+
+      annotation = annotation as EafAlignableAnnotation;
+
+      if (annotation.custom_start != null) {
+        time = annotation.custom_start.time;
+      }
+
+      if (annotation.custom_start == null) {
+        time = annotation.start.time;
+      }
+    }
+
+    this.annotationActivated.emit(time);
+  }
+
+  annotationOrder(a: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>, b: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>): number {
+    return b.value.rank > a.value.rank ? -1 : (a.value.rank > b.value.rank ? 1 : 0);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   debug() {

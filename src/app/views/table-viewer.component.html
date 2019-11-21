@@ -5,14 +5,14 @@
 <div *ngIf="null !== tier && null !== eaf">
 
     <div *ngIf="0 === eaf.header.media.count()">No streaming media source available or accessible.</div>
-    <app-video #videoPlayer url="{{ mediaSource.url }}" mimetype="{{ mediaSource.mimetype }}" (progress)="progressTracker($event)" width="{{ this.width }}" *ngIf="mediaSource"></app-video>
+    <app-media-player #mediaPlayer (progress)="progressTracker($event)" *ngIf="mediaSource"></app-media-player>
     <div>
         {{ showTimestamps ? 'Hide' : 'Show' }} timestamps <input type="checkbox" (change)="toggleShowTimestamps($event)" />
     </div>
     <div class="select-block" *ngIf="eaf.header.media.count() > 1" [ngStyle]="getWidth()">
         <span>Select media:</span>
         <select class="media-selector" (change)="changeMedia($event)">
-            <option *ngFor="let iter of eaf.header.media.media()" [value]="iter.id">{{ iter.mimetype }}</option>
+            <option *ngFor="let iter of eaf.header.media.media()" [value]="iter.id">{{ iter.filename }}</option>
         </select>
     </div>
 
@@ -31,21 +31,9 @@
         <div class="th"><span *ngIf="showTimestamps == true">Duration</span></div>
     </div>
 
-    <div *ngFor="let iter of tier.annotations | keyvalue: annotationOrder; let i = index" (click)="activateAnnotation(iter.value.value.id)" [ngStyle]="getWidth()">
-        <ng-template [ngIf]="tier.linguistic_type === 'toplevel'">
-            <app-toplevel row="{{ i + 1 }}" id="{{ iter.value.value.id }}"></app-toplevel>
-        </ng-template>
-        <ng-template [ngIf]="tier.linguistic_type === 'Symbolic_Subdivision'">
-            <app-symbolic-subdivision row="{{ i + 1 }}" id="{{ iter.value.value.id }}"></app-symbolic-subdivision>
-        </ng-template>
-        <ng-template [ngIf]="tier.linguistic_type === 'Symbolic_Association'">
-            <app-symbolic-association row="{{ i + 1 }}" id="{{ iter.value.value.id }}"></app-symbolic-association>
-        </ng-template>
-        <ng-template [ngIf]="tier.linguistic_type === 'Time_Subdivision'">
-            <app-time-subdivision row="{{ i + 1 }}" id="{{ iter.value.value.id }}"></app-time-subdivision>
-        </ng-template>
-        <ng-template [ngIf]="tier.linguistic_type === 'Included_In'">
-            <app-included-in row="{{ i + 1 }}" id="{{ iter.value.value.id }}"></app-included-in>
-        </ng-template>
-    </div>
+    <app-toplevel *ngIf="tier.linguistic_type === 'toplevel'" (annotationActivated)="setPlayTime($event)"></app-toplevel>
+    <app-symbolic-association *ngIf="tier.linguistic_type === 'Symbolic_Association'" (annotationActivated)="setPlayTime($event)"></app-symbolic-association>
+    <app-symbolic-subdivision *ngIf="tier.linguistic_type === 'Symbolic_Subdivision'" (annotationActivated)="setPlayTime($event)"></app-symbolic-subdivision>
+    <app-time-subdivision *ngIf="tier.linguistic_type === 'Time_Subdivision'" (annotationActivated)="setPlayTime($event)"></app-time-subdivision>
+    <app-included-in *ngIf="tier.linguistic_type === 'Included_In'" (annotationActivated)="setPlayTime($event)"></app-included-in>
 </div>

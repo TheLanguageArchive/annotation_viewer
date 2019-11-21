@@ -9,6 +9,7 @@ export interface EafMetadataInterface {
 export interface EafMediaInterface {
 
     id: number;
+    filename: string;
     url: string;
     mimetype: string;
     relative: string;

@@ -7,7 +7,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import { AnnotationViewerComponent } from '@fav-components/annotation-viewer.component';
 import { TableViewerComponent } from '@fav-components/table-viewer.component';
 import { MessagesComponent } from '@fav-components/messages.component';
-import { VideoComponent } from '@fav-components/video.component';
+import { MediaPlayerComponent } from '@fav-components/media-player.component';
 import { ToplevelComponent } from '@fav-components/table-viewer/toplevel.component';
 import { SymbolicSubdivisionComponent } from '@fav-components/table-viewer/symbolic-subdivision.component';
 import { TimeSubdivisionComponent } from '@fav-components/table-viewer/time-subdivision.component';
@@ -15,6 +15,7 @@ import { SymbolicAssociationComponent } from '@fav-components/table-viewer/symbo
 import { IncludedInComponent } from '@fav-components/table-viewer/included-in.component';
 import { SettingsStore } from '@fav-stores/settings-store';
 import { EafStore } from '@fav-stores/eaf-store';
+import { MediaStore } from '@fav-stores/media-store';
 import { LoadingComponent } from '@fav-components/loading.component';
 
 @NgModule({
@@ -22,7 +23,7 @@ import { LoadingComponent } from '@fav-components/loading.component';
     AnnotationViewerComponent,
     TableViewerComponent,
     MessagesComponent,
-    VideoComponent,
+    MediaPlayerComponent,
     ToplevelComponent,
     SymbolicSubdivisionComponent,
     SymbolicAssociationComponent,
@@ -36,7 +37,7 @@ import { LoadingComponent } from '@fav-components/loading.component';
     HotkeyModule.forRoot()
   ],
   entryComponents: [AnnotationViewerComponent],
-  providers: [SettingsStore, EafStore],
+  providers: [SettingsStore, EafStore, MediaStore],
 })
 export class AppModule {
 

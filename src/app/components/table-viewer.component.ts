@@ -1,52 +1,34 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 
-import { VideoComponent } from '@fav-components/video.component';
+import { MediaPlayerComponent } from '@fav-components/media-player.component';
 import { EafStore } from '@fav-stores/eaf-store';
 import { KeyValue } from '@angular/common';
 import { EafTier } from '@fav-models/eaf/tier';
 import { OrderedValue } from '@fav-models/ordered-map';
-import { EafAlignableAnnotation } from '@fav-models/eaf/alignable-annotation';
-import { EafRefAnnotation } from '@fav-models/eaf/ref-annotation';
 import { Eaf } from '@fav-models/eaf';
 import { EafMedia } from '@fav-models/eaf/media';
 import { SettingsStore } from '@fav-stores/settings-store';
+import { MediaStore } from '@fav-stores/media-store';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-table-viewer',
   templateUrl: '../views/table-viewer.component.html',
   styleUrls: ['../styles/table-viewer.component.scss']
 })
-export class TableViewerComponent implements OnInit {
+export class TableViewerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('videoPlayer', { static: false }) videoPlayer: VideoComponent;
+  @ViewChild('mediaPlayer', { static: false }) mediaPlayer: MediaPlayerComponent;
 
-  showTimestamps: boolean = true;
-  width: number           = 100;
-  height: number          = 100;
-  tier: EafTier           = null;
-  eaf: Eaf                = null;
-  mediaSource: EafMedia   = null;
+  showTimestamps: boolean     = true;
+  width: number               = 100;
+  height: number              = 100;
+  tier: EafTier               = null;
+  eaf: Eaf                    = null;
+  mediaSource: EafMedia       = null;
+  subscriptions: Subscription = new Subscription();
 
-  constructor(private eafStore: EafStore, private settingsStore: SettingsStore, private hotkeys: HotkeysService) {
-
-    this.hotkeys.add(new Hotkey('p', (event: KeyboardEvent): boolean => {
-
-      if (this.videoPlayer) {
-        this.videoPlayer.play();
-      }
-
-      return false;
-    }));
-
-    this.hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
-
-      if (this.videoPlayer) {
-        this.videoPlayer.toggleMute();
-      }
-
-      return false;
-    }));
+  constructor(private eafStore: EafStore, private settingsStore: SettingsStore, private mediaStore: MediaStore) {
   }
 
   /**
@@ -54,7 +36,7 @@ export class TableViewerComponent implements OnInit {
    */
   ngOnInit() {
 
-    let settingsObserver = this.settingsStore.state$.subscribe((data) => {
+    this.subscriptions.add(this.settingsStore.state$.subscribe((data) => {
 
       if (data.action === 'initialize') {
 
@@ -74,9 +56,20 @@ export class TableViewerComponent implements OnInit {
       if (data.action === 'toggle-show-timestamps') {
         this.showTimestamps = data.showTimestamps;
       }
-    });
+    }));
 
-    let eafObserver = this.eafStore.state$.subscribe((data) => {
+    this.subscriptions.add(this.mediaStore.state$.subscribe((data) => {
+
+      if (data.action === 'initialize') {
+        this.mediaSource = data.media;
+      }
+
+      if (data.action === 'set-media') {
+        this.mediaSource = data.media;
+      }
+    }));
+
+    this.subscriptions.add(this.eafStore.state$.subscribe((data) => {
 
       if (data.action === 'initialize') {
 
@@ -84,14 +77,14 @@ export class TableViewerComponent implements OnInit {
         this.eaf  = data.eaf;
 
         if (this.eaf.header.media.first()) {
-          this.mediaSource = this.eaf.header.media.first();
+          this.mediaStore.buildInitialState(this.eaf.header.media.first());
         }
       }
 
       if (data.action === 'set-tier') {
         this.tier = data.tier;
       }
-    });
+    }));
   }
 
   /**
@@ -105,12 +98,12 @@ export class TableViewerComponent implements OnInit {
     let source = this.eaf.header.media.fetch(parseInt(id));
 
     if (null !== source) {
-      this.mediaSource = source;
+      this.mediaStore.setMedia(source);
     }
   }
 
   /**
-   * Video Component sends this method the current time
+   * MediaPlayerComponent sends this method the current time
    * so we can activate the appropriate annotations.
    *
    * @param currentTime
@@ -118,7 +111,7 @@ export class TableViewerComponent implements OnInit {
   progressTracker(currentTime: number) {
 
     let activeIds = [];
-    this.eafStore.state.tier.annotations.forEach(item => {
+    this.tier.annotations.forEach(item => {
 
       let annotation = item.value;
 
@@ -166,53 +159,9 @@ export class TableViewerComponent implements OnInit {
   }
 
   /**
-   * This method allows you to activate an annotation.
-   * It also sets the video player at the correct time.
-   *
-   * @param annotationId
-   */
-  activateAnnotation(annotationId: string) {
-
-    this.eafStore.activateAnnotations([annotationId]);
-
-    let annotation = this.eafStore.state.tier.annotations.get(annotationId);
-    let time       = 0;
-
-    if (annotation.type === 'ref') {
-
-      annotation = annotation as EafRefAnnotation;
-
-      if (annotation.custom_start != null) {
-          time = annotation.custom_start.time;
-      }
-
-      if (annotation.custom_start == null) {
-          time = annotation.referenced_annotation.start.time;
-      }
-    }
-
-    if (annotation.type === 'alignable') {
-
-      annotation = annotation as EafAlignableAnnotation;
-
-      if (annotation.custom_start != null) {
-        time = annotation.custom_start.time;
-      }
-
-      if (annotation.custom_start == null) {
-        time = annotation.start.time;
-      }
-    }
-
-    if (this.videoPlayer) {
-      this.videoPlayer.setPlayTime(time);
-    }
-  }
-
-  /**
    * Changing tier and loading its annotation in the table
    * and activating the appropriate annotations at the current
-   * video player time.
+   * media player time.
    *
    * @param event
    */
@@ -220,8 +169,15 @@ export class TableViewerComponent implements OnInit {
 
     this.eafStore.setTier((event.target as HTMLInputElement).value);
 
-    if (this.videoPlayer) {
-      this.progressTracker(this.videoPlayer.getPlayTime());
+    if (this.mediaPlayer) {
+      this.progressTracker(this.mediaPlayer.getPlayTime());
+    }
+  }
+
+  setPlayTime(time: number) {
+
+    if (this.mediaPlayer) {
+      this.mediaPlayer.setPlayTime(time);
     }
   }
 
@@ -230,10 +186,6 @@ export class TableViewerComponent implements OnInit {
   }
 
   tierOrder(a: KeyValue<string, OrderedValue<EafTier>>, b: KeyValue<string, OrderedValue<EafTier>>): number {
-    return b.value.rank > a.value.rank ? -1 : (a.value.rank > b.value.rank ? 1 : 0);
-  }
-
-  annotationOrder(a: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>, b: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>): number {
     return b.value.rank > a.value.rank ? -1 : (a.value.rank > b.value.rank ? 1 : 0);
   }
 
@@ -258,6 +210,10 @@ export class TableViewerComponent implements OnInit {
     return {
       height: this.height + '%',
     };
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   dump(data) {
