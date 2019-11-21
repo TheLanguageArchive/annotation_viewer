@@ -1,0 +1,3 @@
+<video controls #player [ngStyle]="{ 'width': width + '%', 'height': media.audio == true ? '10%' : null }" *ngIf="media !== null">
+  <source src="{{ media.url }}" type="{{ media.mimetype }}">
+</video>
