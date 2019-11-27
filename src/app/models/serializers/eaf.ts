@@ -15,7 +15,7 @@ export function SerializeEaf(eaf: EafInterface) {
 
     let media = [];
     for (let item of eaf.header.media.media) {
-        media.push(new EafMedia(item.id, item.filename, item.url, item.mimetype, item.relative, item.audio));
+        media.push(new EafMedia(item.id, item.filename, item.url, item.mimetype, item.relative, item.audio, item.offset));
     }
 
     let mediaManager = new EafMediaManager(media, eaf.header.media.count, eaf.header.media.first);

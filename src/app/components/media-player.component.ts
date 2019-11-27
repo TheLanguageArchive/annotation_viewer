@@ -91,8 +91,9 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // then loading player with new source
+    // then loading player with new source and setting offset
     this.player.first.nativeElement.load();
+    this.player.first.nativeElement.currentTime = this.media.offset / 1000;
 
     // then binding listeners
     this.playListener = this.renderer.listen(this.player.first.nativeElement, 'play', () => {
@@ -128,18 +129,27 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.progressTracker = window.setInterval(() => {
+    let emitter = () => {
 
       // html5 video/audio element currentTime is in seconds
       // let's convert it to miliseconds and emit to progress listener
-      this.progress.emit(this.player.first.nativeElement.currentTime * 1000);
-    }, 1);
+      let time = this.player.first.nativeElement.currentTime * 1000;
+      console.log(time);
+
+      this.progress.emit(time);
+
+      // and use 60 fps animation framerate from browser
+      this.progressTracker = window.requestAnimationFrame(emitter);
+    };
+
+    // starting progress tracker
+    this.progressTracker = window.requestAnimationFrame(emitter);
   }
 
   stopTrackingProgress() {
 
     if (this.progressTracker) {
-      window.clearInterval(this.progressTracker);
+      window.cancelAnimationFrame(this.progressTracker);
     }
   }
 

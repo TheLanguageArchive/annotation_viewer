@@ -110,6 +110,7 @@ export class TableViewerComponent implements OnInit, OnDestroy {
    */
   progressTracker(currentTime: number) {
 
+    console.log(currentTime);
     let activeIds = [];
     this.tier.annotations.forEach(item => {
 

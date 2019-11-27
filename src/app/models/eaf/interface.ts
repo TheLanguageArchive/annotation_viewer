@@ -14,6 +14,7 @@ export interface EafMediaInterface {
     mimetype: string;
     relative: string;
     audio: boolean;
+    offset: number;
 }
 
 export interface EafMediaManagerInterface {
