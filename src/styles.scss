@@ -6,6 +6,10 @@
     grid-template-rows: 1fr;
     grid-template-areas: ". . . . ." ". . . . .";
 
+    &.no-timestamps {
+        grid-template-columns: 0.3fr 1fr;
+    }
+
     &.annotation {
         cursor: pointer;
     }

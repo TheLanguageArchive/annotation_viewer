@@ -26,9 +26,9 @@
     <div class="table-viewer" [ngStyle]="getWidth()">
         <div class="th">Nr</div>
         <div class="th">Annotation</div>
-        <div class="th"><span *ngIf="showTimestamps == true">Begin Time</span></div>
-        <div class="th"><span *ngIf="showTimestamps == true">End Time</span></div>
-        <div class="th"><span *ngIf="showTimestamps == true">Duration</span></div>
+        <div class="th" *ngIf="showTimestamps">Begin Time</div>
+        <div class="th" *ngIf="showTimestamps">End Time</div>
+        <div class="th" *ngIf="showTimestamps">Duration</div>
     </div>
 
     <app-toplevel *ngIf="tier.linguistic_type === 'toplevel'" (annotationActivated)="setPlayTime($event)"></app-toplevel>
@@ -36,4 +36,5 @@
     <app-symbolic-subdivision *ngIf="tier.linguistic_type === 'Symbolic_Subdivision'" (annotationActivated)="setPlayTime($event)"></app-symbolic-subdivision>
     <app-time-subdivision *ngIf="tier.linguistic_type === 'Time_Subdivision'" (annotationActivated)="setPlayTime($event)"></app-time-subdivision>
     <app-included-in *ngIf="tier.linguistic_type === 'Included_In'" (annotationActivated)="setPlayTime($event)"></app-included-in>
+
 </div>

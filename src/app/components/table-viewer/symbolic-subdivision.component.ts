@@ -7,4 +7,13 @@ import { ToplevelComponent } from './toplevel.component';
   styleUrls: ['../../styles/table-viewer/symbolic-subdivision.component.scss']
 })
 export class SymbolicSubdivisionComponent extends ToplevelComponent {
+
+  getAnnotations() {
+
+    return super
+      .getAnnotations()
+      .map(annotation => {
+        return annotation.type === 'ref' && annotation.ref !== null;
+      });
+  }
 }

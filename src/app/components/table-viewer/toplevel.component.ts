@@ -7,7 +7,7 @@ import { EafTimeslot } from '@fav/app/models/eaf/timeslot';
 import { Subscription } from 'rxjs';
 import { EafRefAnnotation } from '@fav/app/models/eaf/ref-annotation';
 import { EafAlignableAnnotation } from '@fav/app/models/eaf/alignable-annotation';
-import { KeyValue } from '@angular/common';
+import { KeyValue, KeyValuePipe } from '@angular/common';
 import { OrderedValue } from '@fav/app/models/ordered-map';
 
 @Component({
@@ -26,7 +26,7 @@ export class ToplevelComponent implements OnInit, OnDestroy {
   width: number               = 100;
   subscriptions: Subscription = new Subscription();
 
-  constructor(public eafStore: EafStore, public settingsStore: SettingsStore) {}
+  constructor(public eafStore: EafStore, public settingsStore: SettingsStore, private keyValuePipe: KeyValuePipe) {}
 
   ngOnInit() {
 
@@ -87,6 +87,62 @@ export class ToplevelComponent implements OnInit, OnDestroy {
       }
   }
 
+  isRefAnnotation(annotation: EafRefAnnotation | EafAlignableAnnotation): annotation is EafRefAnnotation {
+    return (annotation as EafRefAnnotation).type === 'ref';
+  }
+
+  isAlignableAnnotation(annotation: EafRefAnnotation | EafAlignableAnnotation): annotation is EafAlignableAnnotation {
+    return (annotation as EafAlignableAnnotation).type === 'alignable';
+  }
+
+  showStartTime(annotation: EafRefAnnotation | EafAlignableAnnotation) {
+
+    if (this.isRefAnnotation(annotation) && annotation.ref !== null && annotation.custom_start !== null) {
+      return this.formatDuration(annotation.custom_start.time);
+    }
+
+    if (this.isAlignableAnnotation(annotation) && annotation.start !== null) {
+      return this.formatDuration(annotation.start.time);
+    }
+
+    return '';
+  }
+
+  showEndTime(annotation: EafRefAnnotation | EafAlignableAnnotation) {
+
+    if (this.isRefAnnotation(annotation) && annotation.ref !== null && annotation.custom_end !== null) {
+      return this.formatDuration(annotation.custom_end.time);
+    }
+
+    if (this.isAlignableAnnotation(annotation) && annotation.end !== null) {
+      return this.formatDuration(annotation.end.time);
+    }
+  }
+
+  showDurationTime(annotation: EafRefAnnotation | EafAlignableAnnotation) {
+
+    if (this.isRefAnnotation(annotation) && annotation.ref !== null && annotation.custom_start !== null && annotation.custom_end !== null) {
+
+      return this.formatDuration(
+        this.getDuration(annotation.custom_start, annotation.custom_end)
+      );
+    }
+
+    if (this.isAlignableAnnotation(annotation) && annotation.custom_start !== null && annotation.custom_end !== null) {
+
+      return this.formatDuration(
+        this.getDuration(annotation.custom_start, annotation.custom_end)
+      );
+    }
+
+    if (this.isAlignableAnnotation(annotation) && annotation.custom_start === null && annotation.start !== null && annotation.end !== null) {
+
+      return this.formatDuration(
+        this.getDuration(annotation.start, annotation.end)
+      );
+    }
+  }
+
   getWidth() {
 
     return {
@@ -107,9 +163,7 @@ export class ToplevelComponent implements OnInit, OnDestroy {
     let annotation = this.eafStore.state.tier.annotations.get(annotationId);
     let time       = 0;
 
-    if (annotation.type === 'ref') {
-
-      annotation = annotation as EafRefAnnotation;
+    if (this.isRefAnnotation(annotation)) {
 
       if (annotation.custom_start != null) {
           time = annotation.custom_start.time;
@@ -120,9 +174,7 @@ export class ToplevelComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (annotation.type === 'alignable') {
-
-      annotation = annotation as EafAlignableAnnotation;
+    if (this.isAlignableAnnotation(annotation)) {
 
       if (annotation.custom_start != null) {
         time = annotation.custom_start.time;
@@ -138,6 +190,15 @@ export class ToplevelComponent implements OnInit, OnDestroy {
 
   annotationOrder(a: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>, b: KeyValue<string, OrderedValue<EafAlignableAnnotation | EafRefAnnotation>>): number {
     return b.value.rank > a.value.rank ? -1 : (a.value.rank > b.value.rank ? 1 : 0);
+  }
+
+  getAnnotations() {
+
+    return this.keyValuePipe
+      .transform(this.tier.annotations)
+      .map(item => {
+        return item.value.value;
+      });
   }
 
   ngOnDestroy() {

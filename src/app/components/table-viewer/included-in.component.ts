@@ -7,4 +7,13 @@ import { ToplevelComponent } from './toplevel.component';
   styleUrls: ['../../styles/table-viewer/included-in.component.scss']
 })
 export class IncludedInComponent extends ToplevelComponent {
+
+  getAnnotations() {
+
+    return super
+      .getAnnotations()
+      .map(annotation => {
+        return annotation.type === 'alignable';
+      });
+  }
 }

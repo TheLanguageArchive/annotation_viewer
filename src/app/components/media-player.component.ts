@@ -93,7 +93,7 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
 
     // then loading player with new source and setting offset
     this.player.first.nativeElement.load();
-    this.player.first.nativeElement.currentTime = 0;//this.media.offset / 1000;
+    this.player.first.nativeElement.currentTime = (this.media.offset > 0 ? (this.media.offset / 1000) : 0);
 
     // then binding listeners
     this.playListener = this.renderer.listen(this.player.first.nativeElement, 'play', () => {
@@ -134,7 +134,6 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
       // html5 video/audio element currentTime is in seconds
       // let's convert it to miliseconds and emit to progress listener
       let time = this.player.first.nativeElement.currentTime * 1000;
-      console.log(time);
 
       this.progress.emit(time);
 
