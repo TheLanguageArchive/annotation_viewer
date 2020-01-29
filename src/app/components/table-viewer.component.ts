@@ -190,6 +190,10 @@ export class TableViewerComponent implements OnInit, OnDestroy {
     return b.value.rank > a.value.rank ? -1 : (a.value.rank > b.value.rank ? 1 : 0);
   }
 
+  getMediaSourceOffset() {
+    return `${Math.round(this.mediaSource.offset / 1000).toFixed(3)}s`;
+  }
+
   getDimensions() {
 
     return {

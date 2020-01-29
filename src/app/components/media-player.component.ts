@@ -22,6 +22,7 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
   private progressTracker: any;
   private playListener: any;
   private stopListener: any;
+  private seekListener: any;
 
   subscriptions: Subscription = new Subscription();
 
@@ -80,6 +81,10 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
     if (this.stopListener) {
       this.stopListener();
     }
+
+    if (this.seekListener) {
+      this.seekListener();
+    }
   }
 
   bindListeners() {
@@ -102,6 +107,15 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
 
     this.stopListener = this.renderer.listen(this.player.first.nativeElement, 'pause', () => {
       this.stopTrackingProgress();
+    });
+
+    this.seekListener = this.renderer.listen(this.player.first.nativeElement, 'seeked', (event) => {
+
+      let currentTime = this.player.first.nativeElement.currentTime / 1000;
+
+      if (this.media.offset > 0 && currentTime < this.media.offset) {
+        this.player.first.nativeElement.currentTime = this.media.offset / 1000;
+      }
     });
   }
 
