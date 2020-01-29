@@ -1,4 +1,4 @@
-<div class="table-viewer annotation" *ngFor="let annotation of getAnnotations(); let i = index;" [ngClass]="{'active': activeIds.indexOf(annotation.id) > -1, 'no-timestamps': false == showTimestamps }" [ngStyle]="getWidth()">
+<div class="table-viewer annotation" *ngFor="let annotation of getAnnotations(); let i = index;" [ngClass]="{'active': activeIds.indexOf(annotation.id) > -1, 'no-timestamps': false == showTimestamps }" [ngStyle]="getWidth()" (click)="activateAnnotation(annotation.id)">
     <div class="table-viewer-tr">{{ i + 1 }}</div>
     <div class="table-viewer-tr">{{ annotation.value }}</div>
     <div class="table-viewer-tr" *ngIf="showTimestamps">{{ showStartTime(annotation) }}</div>

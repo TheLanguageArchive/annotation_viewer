@@ -184,7 +184,7 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
 
     // we use miliseconds but video/audio player uses seconds
     // convert and set time
-    this.player.first.nativeElement.currentTime = (time / 1000);
+    this.player.first.nativeElement.currentTime = ((time + (this.media.offset > 0 ? this.media.offset : 0)) / 1000);
   }
 
   getPlayTime() {
