@@ -12,7 +12,7 @@ export class SymbolicSubdivisionComponent extends ToplevelComponent {
 
     return super
       .getAnnotations()
-      .map(annotation => {
+      .filter(annotation => {
         return annotation.type === 'ref' && annotation.ref !== null;
       });
   }

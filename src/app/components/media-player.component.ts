@@ -111,7 +111,7 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
 
     this.seekListener = this.renderer.listen(this.player.first.nativeElement, 'seeked', (event) => {
 
-      let currentTime = this.player.first.nativeElement.currentTime / 1000;
+      let currentTime = this.player.first.nativeElement.currentTime * 1000;
 
       if (this.media.offset > 0 && currentTime < this.media.offset) {
         this.player.first.nativeElement.currentTime = this.media.offset / 1000;
@@ -147,9 +147,17 @@ export class MediaPlayerComponent implements OnInit, AfterViewInit {
 
       // html5 video/audio element currentTime is in seconds
       // let's convert it to miliseconds and emit to progress listener
-      let time = this.player.first.nativeElement.currentTime * 1000;
+      let time = this.player.first.nativeElement.currentTime;
+      if (this.media.offset > 0) {
 
-      this.progress.emit(time);
+        time -= (this.media.offset / 1000);
+
+        if (time < 0) {
+          time = 0;
+        }
+      }
+
+      this.progress.emit(time * 1000);
 
       // and use 60 fps animation framerate from browser
       this.progressTracker = window.requestAnimationFrame(emitter);
