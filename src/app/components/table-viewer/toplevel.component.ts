@@ -3,7 +3,6 @@ import TimeFormat from 'hh-mm-ss';
 import { EafTier } from '@fav-models/eaf/tier';
 import { EafStore } from '@fav-stores/eaf-store';
 import { SettingsStore } from '@fav-stores/settings-store';
-import { EafTimeslot } from '@fav/app/models/eaf/timeslot';
 import { Subscription } from 'rxjs';
 import { EafRefAnnotation } from '@fav/app/models/eaf/ref-annotation';
 import { EafAlignableAnnotation } from '@fav/app/models/eaf/alignable-annotation';
@@ -78,12 +77,12 @@ export class ToplevelComponent implements OnInit, OnDestroy {
     return TimeFormat.fromMs(duration, 'hh:mm:ss.sss');
   }
 
-  getDuration(start: EafTimeslot, end: EafTimeslot) {
+  getDuration(start: number, end: number) {
 
-      if (start.time > end.time) {
-          return start.time - end.time;
+      if (start > end) {
+          return start - end;
       } else {
-          return end.time - start.time;
+          return end - start;
       }
   }
 
@@ -98,11 +97,11 @@ export class ToplevelComponent implements OnInit, OnDestroy {
   showStartTime(annotation: EafRefAnnotation | EafAlignableAnnotation) {
 
     if (this.isRefAnnotation(annotation) && annotation.ref !== null && annotation.custom_start !== null) {
-      return this.formatDuration(annotation.custom_start.time);
+      return this.formatDuration(annotation.custom_start);
     }
 
     if (this.isAlignableAnnotation(annotation) && annotation.start !== null) {
-      return this.formatDuration(annotation.start.time);
+      return this.formatDuration(annotation.start);
     }
 
     return '';
@@ -111,11 +110,11 @@ export class ToplevelComponent implements OnInit, OnDestroy {
   showEndTime(annotation: EafRefAnnotation | EafAlignableAnnotation) {
 
     if (this.isRefAnnotation(annotation) && annotation.ref !== null && annotation.custom_end !== null) {
-      return this.formatDuration(annotation.custom_end.time);
+      return this.formatDuration(annotation.custom_end);
     }
 
     if (this.isAlignableAnnotation(annotation) && annotation.end !== null) {
-      return this.formatDuration(annotation.end.time);
+      return this.formatDuration(annotation.end);
     }
   }
 
@@ -166,22 +165,22 @@ export class ToplevelComponent implements OnInit, OnDestroy {
     if (this.isRefAnnotation(annotation)) {
 
       if (annotation.custom_start != null) {
-          time = annotation.custom_start.time;
+          time = annotation.custom_start;
       }
 
       if (annotation.custom_start == null) {
-          time = annotation.referenced_annotation.start.time;
+          time = annotation.referenced_annotation.start;
       }
     }
 
     if (this.isAlignableAnnotation(annotation)) {
 
       if (annotation.custom_start != null) {
-        time = annotation.custom_start.time;
+        time = annotation.custom_start;
       }
 
       if (annotation.custom_start == null) {
-        time = annotation.start.time;
+        time = annotation.start;
       }
     }
 

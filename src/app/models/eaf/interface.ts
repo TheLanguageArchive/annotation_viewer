@@ -38,21 +38,15 @@ export interface EafHeaderInterface {
     properties: EafHeaderPropertyInterface[];
 }
 
-export interface EafTimeslotInterface {
-
-    id: string;
-    time: number;
-}
-
 export interface EafAlignableAnnotationInterface {
 
     id: string;
     type: string;
     value: string;
-    start: EafTimeslotInterface;
-    end: EafTimeslotInterface;
-    custom_start: EafTimeslotInterface | null;
-    custom_end: EafTimeslotInterface | null;
+    start: number;
+    end: number;
+    custom_start: number | null;
+    custom_end: number | null;
     ref: null;
 }
 
@@ -63,10 +57,8 @@ export interface EafRefAnnotationInterface {
     value: string;
     ref: string | null;
     referenced_annotation: EafAlignableAnnotationInterface | null;
-    previous: string | null;
-    previous_annotation: EafRefAnnotationInterface | null;
-    custom_start: EafTimeslotInterface | null;
-    custom_end: EafTimeslotInterface | null;
+    custom_start: number | null;
+    custom_end: number | null;
 }
 
 export interface EafTierInterface {
@@ -81,7 +73,6 @@ export interface EafInterface {
 
     metadata: EafMetadataInterface;
     header: EafHeaderInterface;
-    timeslots: EafTimeslotInterface[];
     tiers: EafTierInterface[];
 }
 

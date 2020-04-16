@@ -121,7 +121,7 @@ export class TableViewerComponent implements OnInit, OnDestroy {
 
           // ref annotation without custom start/end times
           // get start/end from referenced annotation
-          if (currentTime >= annotation.referenced_annotation.start.time && currentTime <= annotation.referenced_annotation.end.time) {
+          if (currentTime >= annotation.referenced_annotation.start && currentTime <= annotation.referenced_annotation.end) {
             activeIds.push(annotation.id);
           }
         }
@@ -129,7 +129,7 @@ export class TableViewerComponent implements OnInit, OnDestroy {
         if (annotation.custom_start != null) {
 
           // ref annotation with custom start/end times
-          if (currentTime >= annotation.custom_start.time && currentTime <= annotation.custom_end.time) {
+          if (currentTime >= annotation.custom_start && currentTime <= annotation.custom_end) {
             activeIds.push(annotation.id);
           }
         }
@@ -140,7 +140,7 @@ export class TableViewerComponent implements OnInit, OnDestroy {
         if (annotation.custom_start == null) {
 
           // alignable annotation without custom time
-          if (currentTime >= annotation.start.time && currentTime <= annotation.end.time) {
+          if (currentTime >= annotation.start && currentTime <= annotation.end) {
             activeIds.push(annotation.id);
           }
         }
@@ -148,7 +148,7 @@ export class TableViewerComponent implements OnInit, OnDestroy {
         if (annotation.custom_start != null) {
 
           // alignable annotation with custom time
-          if (currentTime >= annotation.custom_start.time && currentTime <= annotation.custom_end.time) {
+          if (currentTime >= annotation.custom_start && currentTime <= annotation.custom_end) {
             activeIds.push(annotation.id);
           }
         }

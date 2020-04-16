@@ -1,14 +1,12 @@
-import { EafTimeslot } from "@fav-models/eaf/timeslot";
-
 export class EafAlignableAnnotation {
 
     id: string;
     type: string;
     value: string;
-    start: EafTimeslot;
-    end: EafTimeslot;
-    custom_start: EafTimeslot | null;
-    custom_end: EafTimeslot | null;
+    start: number;
+    end: number;
+    custom_start: number | null;
+    custom_end: number | null;
 
     /**
      * @TODO fix this so we don't need this
@@ -18,7 +16,7 @@ export class EafAlignableAnnotation {
      */
     ref = null;
 
-    constructor(id: string, type: string, value: string, start: EafTimeslot, end: EafTimeslot, custom_start: EafTimeslot | null, custom_end: EafTimeslot | null) {
+    constructor(id: string, type: string, value: string, start: number, end: number, custom_start: number | null, custom_end: number | null) {
 
         this.id           = id;
         this.type         = type;
