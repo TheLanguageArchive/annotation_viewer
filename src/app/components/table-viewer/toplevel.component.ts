@@ -195,6 +195,7 @@ export class ToplevelComponent implements OnInit, OnDestroy {
 
     return this.keyValuePipe
       .transform(this.tier.annotations)
+      .sort(this.annotationOrder)
       .map(item => {
         return item.value.value;
       });
