@@ -1,6 +1,6 @@
-<video controls #player [ngStyle]="{ 'width': width + '%', 'height': null }" *ngIf="media !== null && false == media.audio">
+<video controls #player [ngStyle]="{ 'width': width + '%' }" *ngIf="media !== null && false == media.audio">
   <source src="{{ media.url }}" type="{{ media.mimetype }}">
 </video>
-<audio controls #player [ngStyle]="{ 'width': width + '%', 'height': '10%' }" *ngIf="media !== null && true == media.audio">
+<audio controls #player [ngStyle]="{ 'width': width + '%', height: '54px' }" *ngIf="media !== null && true == media.audio">
   <source src="{{ media.url }}" type="{{ media.mimetype }}">
 </audio>
