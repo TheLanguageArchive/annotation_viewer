@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 })
 export class TableViewerComponent implements OnInit, OnDestroy {
 
-  @ViewChild('mediaPlayer', { static: false }) mediaPlayer: MediaPlayerComponent;
+  @ViewChild('mediaPlayer') mediaPlayer: MediaPlayerComponent;
 
   showTimestamps: boolean     = true;
   width: number               = 100;
