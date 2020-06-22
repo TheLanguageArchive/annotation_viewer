@@ -1,34 +1,33 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./src/",
-    "downlevelIteration": true,
-    "incremental": true,
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "paths": {
-        "@fav/*": ["./*"],
-        "@fav-components/*": ["app/components/*"],
-        "@fav-models/*": ["app/models/*"],
-        "@fav-services/*": ["app/services/*"],
-        "@fav-stores/*": ["app/stores/*"],
-        "@fav-specs/*": ["app/specs/*"],
-        "@fav-styles/*": ["app/styles/*"],
-        "@fav-views/*": ["app/views/*"],
+      "@fav/*": ["./src/*"],
+      "@fav-components/*": ["./src/app/components/*"],
+      "@fav-models/*": ["./src/app/models/*"],
+      "@fav-services/*": ["./src/app/services/*"],
+      "@fav-stores/*": ["./src/app/stores/*"],
+      "@fav-specs/*": ["./src/app/specs/*"],
+      "@fav-styles/*": ["./src/app/styles/*"],
+      "@fav-views/*": ["./src/app/views/*"],
     },
     "lib": [
       "es2018",
       "dom"
     ]
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }

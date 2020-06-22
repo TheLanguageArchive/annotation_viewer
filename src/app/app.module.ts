@@ -37,7 +37,7 @@ import { LoadingComponent } from '@fav-components/loading.component';
     HttpClientModule,
     HotkeyModule.forRoot()
   ],
-  entryComponents: [AnnotationViewerComponent],
+  // entryComponents: [AnnotationViewerComponent],
   providers: [SettingsStore, EafStore, MediaStore, KeyValuePipe],
 })
 export class AppModule {
