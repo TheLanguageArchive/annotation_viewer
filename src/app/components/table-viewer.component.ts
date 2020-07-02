@@ -26,6 +26,8 @@ export class TableViewerComponent implements OnInit, OnDestroy {
   tier: EafTier               = null;
   eaf: Eaf                    = null;
   mediaSource: EafMedia       = null;
+  loading: boolean            = true;
+  error: boolean              = false;
   subscriptions: Subscription = new Subscription();
 
   constructor(private eafStore: EafStore, private settingsStore: SettingsStore, private mediaStore: MediaStore) {
@@ -71,10 +73,17 @@ export class TableViewerComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(this.eafStore.state$.subscribe((data) => {
 
+      if (data.action === 'error') {
+
+        this.loading = false;
+        this.error   = true;
+      }
+
       if (data.action === 'initialize') {
 
-        this.tier = data.tier;
-        this.eaf  = data.eaf;
+        this.tier    = data.tier;
+        this.eaf     = data.eaf;
+        this.loading = false;
 
         if (this.eaf.header.media.first()) {
           this.mediaStore.buildInitialState(this.eaf.header.media.first());

@@ -1,15 +1,20 @@
-<div *ngIf="null === tier || null === eaf">
+<div *ngIf="loading == true">
     <app-loading></app-loading>
 </div>
 
-<div *ngIf="null !== tier && null !== eaf">
+<div *ngIf="error == true">
+    <app-error></app-error>
+</div>
+
+
+<div *ngIf="loading == false && error == false">
 
     <div *ngIf="0 === eaf.header.media.count()">No streaming media source available or accessible.</div>
     <app-media-player #mediaPlayer (progress)="progressTracker($event)" *ngIf="mediaSource"></app-media-player>
     <div>
         <span class="offset-block" *ngIf="mediaSource && mediaSource.offset > 0">Offset: {{ getMediaSourceOffset() }}</span>
         <span *ngIf="mediaSource && mediaSource.offset > 0"> | </span>
-        <span>{{ showTimestamps ? 'Hide' : 'Show' }} timestamps <input type="checkbox" (change)="toggleShowTimestamps($event)" /></span>
+        <span>{{ showTimestamps ? 'Hide' : 'Show' }} timestamps <input type="checkbox" (change)="toggleShowTimestamps()" /></span>
     </div>
     <div class="select-block" *ngIf="eaf.header.media.count() > 1" [ngStyle]="getWidth()">
         <span>Select media:</span>

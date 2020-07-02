@@ -18,6 +18,7 @@ import { SettingsStore } from '@fav-stores/settings-store';
 import { EafStore } from '@fav-stores/eaf-store';
 import { MediaStore } from '@fav-stores/media-store';
 import { LoadingComponent } from '@fav-components/loading.component';
+import { ErrorComponent } from '@fav-components/error.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { LoadingComponent } from '@fav-components/loading.component';
     TimeSubdivisionComponent,
     IncludedInComponent,
     LoadingComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

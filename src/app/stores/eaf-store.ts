@@ -16,6 +16,17 @@ export class EafStore extends Store<EafState> {
         .fetch()
         .subscribe(eaf => {
 
+            if (null === eaf) {
+
+                this.setState({
+
+                    ...this.state,
+                    action: 'error',
+                });
+
+                return;
+            }
+
             // getting first tier and annotation
             let tier       = Array.from(eaf.tiers)[0][1].value;
             let annotation = Array.from(tier.annotations)[0][1].value;
