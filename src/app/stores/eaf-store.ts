@@ -18,18 +18,28 @@ export class EafStore extends Store<EafState> {
 
             if (null === eaf) {
 
-                this.setState({
+                this.setError();
+                return;
+            }
 
-                    ...this.state,
-                    action: 'error',
-                });
+            let tiers = Array.from(eaf.tiers);
 
+            if (tiers.length === 0) {
+
+                this.setError();
                 return;
             }
 
             // getting first tier and annotation
-            let tier       = Array.from(eaf.tiers)[0][1].value;
-            let annotation = Array.from(tier.annotations)[0][1].value;
+            let tier        = tiers[0][1].value;
+            let annotations = Array.from(tier.annotations);
+            let activeIds   = [];
+
+            if (annotations.length > 0) {
+
+                let annotation = annotations[0][1].value;
+                activeIds = [annotation.id];
+            }
 
             // and setting initial state
             this.setState({
@@ -37,8 +47,8 @@ export class EafStore extends Store<EafState> {
                 ...this.state,
                 action: 'initialize',
                 eaf,
-                tier: tier,
-                activeIds: [annotation.id]
+                tier,
+                activeIds,
             });
         });
     }
@@ -61,6 +71,15 @@ export class EafStore extends Store<EafState> {
             ...this.state,
             action: 'activate-annotations',
             activeIds: annotationIds
+        });
+    }
+
+    setError() {
+
+        this.setState({
+
+            ...this.state,
+            action: 'error',
         });
     }
 }
