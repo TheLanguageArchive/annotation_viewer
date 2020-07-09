@@ -21,6 +21,7 @@ export class ToplevelComponent implements OnInit, OnDestroy {
   tier: EafTier;
   activeIds: string[];
   showTimestamps: boolean;
+  empty: boolean = false;
 
   width: number               = 100;
   subscriptions: Subscription = new Subscription();
@@ -52,18 +53,21 @@ export class ToplevelComponent implements OnInit, OnDestroy {
 
         this.tier      = data.tier;
         this.activeIds = data.activeIds;
+        this.empty     = this.getAnnotations().length === 0;
       }
 
       if (data.action === 'set-tier') {
 
         this.tier      = data.tier;
         this.activeIds = data.activeIds;
+        this.empty     = this.getAnnotations().length === 0;
       }
 
       if (data.action === 'activate-annotations') {
 
         this.tier      = data.tier;
         this.activeIds = data.activeIds;
+        this.empty     = this.getAnnotations().length === 0;
       }
     }));
   }
@@ -199,6 +203,10 @@ export class ToplevelComponent implements OnInit, OnDestroy {
       .map(item => {
         return item.value.value;
       });
+  }
+
+  noAnnotations() {
+    return ;
   }
 
   ngOnDestroy() {

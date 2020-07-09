@@ -10,6 +10,15 @@
         grid-template-columns: 0.3fr 1fr;
     }
 
+    &.empty {
+
+        grid-template-columns: 1fr;
+        background-color: red;
+        color: white;
+        padding: 3px;
+    }
+
+
     &.annotation {
         cursor: pointer;
     }
